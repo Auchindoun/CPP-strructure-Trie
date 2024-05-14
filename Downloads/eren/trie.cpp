@@ -49,13 +49,41 @@ bool SearchWord(struct TrieNode *root, string key) //проверяем нали
 	{
 		int index = key[i] - 'a';
 		if ((crawl->children[index]) == NULL)
+		{
 			return false;
-
+		}
 		crawl = crawl->children[index];
 	}
 
 	return (crawl->is_end_of_word);
 }
+
+bool DeleteWord(struct TrieNode *root, string key) //удаляем слово
+{
+	struct TrieNode *crawl = root;
+
+	for (int i = 0; i < key.length(); i++)
+	{
+		int index = key[i] - 'a';
+		if ((crawl->children[index]) == NULL)
+		{
+			return false; //слова для удаления нет
+		}
+		crawl = crawl->children[index];
+	}
+    
+    if (crawl->is_end_of_word == true)
+    {
+        crawl->is_end_of_word = false;
+        return true;
+    }
+    else
+    {
+        return false; //слова для удаления нет
+    }
+}
+
+
 
 int main()
 {
@@ -66,9 +94,14 @@ int main()
 	int n = sizeof(keys)/sizeof(keys[0]);
 
 	for (int i = 0; i < n; i++)
+	{
 		InsertWord(root, keys[i]);
-
+	}
+	
 	SearchWord(root, "the") ? cout << "Yes, the word |the| in the trie\n" : cout << "No, the word |the| not in the trie\n";
+	SearchWord(root, "eclipse") ? cout << "Yes, the word |eclipse| in the trie\n" : cout << "No, the word |eclipse| not in the trie\n";
+	DeleteWord(root, "eclips") ? cout << "Deleted word |eclips|\n" : cout << "No word |eclips| in trie\n";
+	DeleteWord(root, "eclipse") ? cout << "Deleted word |eclipse|\n" : cout << "No word |eclipse| in trie\n";
 	SearchWord(root, "eclipse") ? cout << "Yes, the word |eclipse| in the trie\n" : cout << "No, the word |eclipse| not in the trie\n";
 	SearchWord(root, "cake") ? cout << "Yes, the word |cake| in the trie\n" : cout << "No, the word |cake| not in the trie\n";
 	SearchWord(root, "life") ? cout << "Yes, the word |life| in the trie\n" : cout << "No, the word |life| not in the trie\n";
